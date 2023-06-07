@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'MagrasBox.urls'
@@ -75,9 +76,13 @@ WSGI_APPLICATION = 'MagrasBox.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "text-game-db",
+        "USER": "postgres",
+        "PASSWORD": "jayBYE_8822",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
 
