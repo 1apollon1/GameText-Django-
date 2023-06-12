@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 
 class Rooms(models.Model):
-    room_name = models.CharField(max_length=100)
+    room_name = models.CharField(max_length=100, unique=True, db_index=True)
     room_author_name = models.CharField(max_length=100)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)

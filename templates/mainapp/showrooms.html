@@ -1,0 +1,14 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+Its showrooms page
+{{ page }}
+<p>
+    <hr>
+{% for room in rooms %}
+    <b>
+        <h1>{{ room.room_name }}</h1> <br> {{ room.room_author_name }}
+    </b>
+<hr>
+{% endfor %}
+{% endblock %}
