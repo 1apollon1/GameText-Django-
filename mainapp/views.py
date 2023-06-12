@@ -5,11 +5,22 @@ from django.http import HttpResponse, Http404
 from .models import *
 
 def main(request):
-    room = Rooms.objects.get(pk = 3)
-    return render(request, 'mainapp/main.html', {'title': 'Main Page'})
-
-def showrooms(request, room_page):
     rooms = Rooms.objects.all()
-    if room_page > len(rooms):
-        raise Http404
-    return render(request, 'mainapp/showrooms.html', {'title': "Room List", 'page': room_page, 'rooms': rooms[:room_page]})
+    types = RoomType.objects.all()
+    if 'typid' in request.GET.keys() and request.GET['typid'].isdigit():
+        rooms = Rooms.objects.filter(type_id=int(request.GET['typid']))
+    context = {
+        'Title': 'Main Page',
+        'rooms': rooms,
+        'types': types
+    }
+    return render(request, 'mainapp/showrooms.html',context=context)
+
+def showroom(request, pageid):
+    room = Rooms.objects.get(id = pageid)
+    context = {
+        'Title': room.room_name,
+        'room': room
+    }
+    return render(request, 'mainapp/room.html', context=context)
+

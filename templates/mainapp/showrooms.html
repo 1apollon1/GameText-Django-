@@ -1,14 +1,18 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-Its showrooms page
-{{ page }}
-<p>
-    <hr>
-{% for room in rooms %}
-    <b>
-        <h1>{{ room.room_name }}</h1> <br> {{ room.room_author_name }}
-    </b>
-<hr>
+
+{% for type in types %}
+<a class="panel_buttons" href="{% url 'get_to_main' %}?typid={{ type.id }}"><button>{{ type.type_name }}</button></a>
 {% endfor %}
+<p></p>
+<b class="page_output">
+{% for room in rooms %}
+        <hr>
+        <h1>{{ room.room_name }}</h1> <br> {{ room.room_author_name }} <br> <a class="nolnk" href={{room.get_output_address}}>Перейти</a>
+
+
+
+{% endfor %}
+</b>
 {% endblock %}

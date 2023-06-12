@@ -8,7 +8,10 @@
 </head>
 <body>
 {% block main %}
-<h3>Here must me st</h3>
+ <a href = "{% url 'get_to_main' %}">
+    <button class="panel_buttons"> На главную </button>
+ </a>
+
 <p>
 {% endblock main %}
 

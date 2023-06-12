@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+<h1>{{room.room_name}}</h1>
+<p>
+<b>{{room.room_author_name}}
+    <br>
+{{room.create_date}}</b>
+
+{% endblock %}

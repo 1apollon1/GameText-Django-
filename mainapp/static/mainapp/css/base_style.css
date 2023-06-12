@@ -1,5 +1,23 @@
 body{
+            background-color: #333333;
+            color: #BBBBBB;
 
-            background-color: red;
+}
 
+.page_output{
+    position: relative;
+    font-size: 70%;
+}
+
+.nolnk {
+    color:white;
+    text-decoration:none;
+}
+
+
+
+.panel_buttons {
+    width: 20%;
+    height: 80%;
+    font-size:120%
 }
