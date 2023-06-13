@@ -7,7 +7,7 @@
 <b class="page_output">
 {% for room in rooms %}
         <hr>
-        <h1>{{ room.room_name }}</h1> <br> {{ room.room_author_name }} <br> <a class="nolnk" href={{room.get_output_address}}>Enter</a>
+        <h1><a class="nolnk" href={{room.get_output_address}}>{{ room.room_name }}</a></h1><a class="nolnk" id="user_lnk" href={{room.get_user_address}}>{{ room.room_author_name }}</a class="nolnk"><br>
 {% endfor %}
 </b>
 {% endblock %}

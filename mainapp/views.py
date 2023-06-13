@@ -24,3 +24,6 @@ def showroom(request, pageid):
     }
     return render(request, 'mainapp/room.html', context=context)
 
+def show_user(request, userid):
+    return HttpResponse('User')
+

@@ -20,6 +20,8 @@ class Rooms(models.Model):
         return self.room_name
     def get_output_address(self):
         return reverse('show_room', kwargs={'pageid': self.pk})
+    def get_user_address(self):
+        return reverse('show_user', kwargs={'userid': 0})
 
     class Meta:
         verbose_name_plural = "rooms"
