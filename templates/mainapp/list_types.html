@@ -1,0 +1,3 @@
+{% for type in types %}
+<a class="panel_buttons" href="{% url 'get_to_main' %}?typid={{ type.id }}"><button>{{ type.type_name }}</button></a>
+{% endfor %}

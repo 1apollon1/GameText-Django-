@@ -1,18 +1,13 @@
 {% extends 'mainapp/base.html' %}
-
+{% load db_tags %}
 {% block content %}
 
-{% for type in types %}
-<a class="panel_buttons" href="{% url 'get_to_main' %}?typid={{ type.id }}"><button>{{ type.type_name }}</button></a>
-{% endfor %}
-<p></p>
+
+{% show_types %}
 <b class="page_output">
 {% for room in rooms %}
         <hr>
-        <h1>{{ room.room_name }}</h1> <br> {{ room.room_author_name }} <br> <a class="nolnk" href={{room.get_output_address}}>Перейти</a>
-
-
-
+        <h1>{{ room.room_name }}</h1> <br> {{ room.room_author_name }} <br> <a class="nolnk" href={{room.get_output_address}}>Enter</a>
 {% endfor %}
 </b>
 {% endblock %}
