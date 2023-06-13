@@ -6,6 +6,9 @@ from django.shortcuts import reverse
 class RoomType(models.Model):
     type_name = models.CharField(max_length=100, unique=True)
 
+    def __str__(self):
+        return self.type_name
+
 class Rooms(models.Model):
     room_name = models.CharField(max_length=100, unique=True, db_index=True)
     room_author_name = models.CharField(max_length=100)
@@ -21,7 +24,6 @@ class Rooms(models.Model):
     class Meta:
         verbose_name_plural = "rooms"
 
-admin.site.register(Rooms)
 admin.site.register(RoomType)
 
 # Create your models here.

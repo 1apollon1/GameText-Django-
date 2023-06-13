@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from .sys_views import hand404
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainapp.urls')),
 
 ]
-
 handler404 = hand404
