@@ -17,11 +17,29 @@ body{
 
 
 .panel_buttons {
+    position: relative;
     width: 20%;
-    height: 80%;
-    font-size:120%
+    font-size:80%;
 }
 
 #user_lnk{
     color: #AAAAAA;
+}
+
+#create_room_button{
+    position: relative;
+    top: 50px;
+    width: 50%;
+    height: 50px;
+    font-size: 150%;
+
+}
+
+#type_setter{
+    height: 40px;
+    width: 30%
+}
+
+#text_in_button{
+    font-size: 120%;
 }

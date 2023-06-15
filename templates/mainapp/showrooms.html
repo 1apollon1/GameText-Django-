@@ -4,10 +4,13 @@
 
 
 {% show_types %}
+<p>
+
 <b class="page_output">
 {% for room in rooms %}
         <hr>
         <h1><a class="nolnk" href={{room.get_output_address}}>{{ room.room_name }}</a></h1><a class="nolnk" id="user_lnk" href={{room.get_user_address}}>{{ room.room_author_name }}</a class="nolnk"><br>
 {% endfor %}
 </b>
+<a  href="{% url 'create_room' %}"><button id="create_room_button">Create Room</button></a>
 {% endblock %}
