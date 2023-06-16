@@ -1,48 +1,51 @@
 from django.shortcuts import render
-from .forms import *
+from django.urls import reverse_lazy
 
+from .forms import *
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
 
 # Create your views here.
 from django.http import HttpResponse, Http404
 from .models import *
 from django.shortcuts import redirect
 
-def main(request):
-    rooms = Rooms.objects.all()
-    types = RoomType.objects.all()
-    if 'typid' in request.GET.keys() and request.GET['typid'].isdigit():
-        rooms = Rooms.objects.filter(type_id=int(request.GET['typid']))
-    context = {
-        'Title': 'Main Page',
-        'rooms': rooms,
-        'types': types
-    }
-    return render(request, 'mainapp/showrooms.html',context=context)
+class Main(ListView):
+    model = Rooms
+    context_object_name = 'rooms'
+    template_name = 'mainapp/showrooms.html'
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['types'] = RoomType.objects.all()
+        return context
+    def get_queryset(self):
+        print(self.request.GET.keys())
+        if 'typid' in self.request.GET.keys() and self.request.GET['typid'].isdigit():
+            queryset = Rooms.objects.filter(type_id = int(self.request.GET['typid']))
+        else:
+            queryset = Rooms.objects.all()
+        return queryset
 
-def showroom(request, pageid):
-    room = Rooms.objects.get(id = pageid)
-    context = {
-        'Title': room.room_name,
-        'room': room
-    }
-    return render(request, 'mainapp/room.html', context=context)
+
+
+class ShowRoom(DetailView):
+    model = Rooms
+    context_object_name = 'room'
+    pk_url_kwarg = 'roomid'
+    template_name = 'mainapp/room.html'
+
+
 
 def show_user(request, userid):
     return HttpResponse('User')
 
 
-def create_room(request):
-    forms = CreateRoom()
-    if request.method == 'POST':
-        forms = CreateRoom(request.POST)
-        if forms.is_valid():
-            try:
-                Rooms.objects.create(**forms.cleaned_data)
-                return redirect('get_to_main')
-            except:
-                forms.add_error(None, 'Error')
-    context = {
-        'Title': 'Room creating',
-        'forms': forms
-    }
-    return render(request, 'mainapp/create_room.html', context=context)
+
+
+
+class CreateRoomView(CreateView):
+    model = Rooms
+    template_name = 'mainapp/create_room.html'
+    form_class = CreateRoom
+    success_url = reverse_lazy('get_to_main')

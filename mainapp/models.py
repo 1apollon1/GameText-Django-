@@ -8,9 +8,12 @@ class RoomType(models.Model):
 
     def __str__(self):
         return self.type_name
+my_own_errors = {
+    'unique': 'Such name taken already'
 
+}
 class Rooms(models.Model):
-    room_name = models.CharField(max_length=100, unique=True, db_index=True)
+    room_name = models.CharField(max_length=100, unique=True, db_index=True, error_messages=my_own_errors)
     room_author_name = models.CharField(max_length=100)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
@@ -19,7 +22,7 @@ class Rooms(models.Model):
     def __str__(self):
         return self.room_name
     def get_output_address(self):
-        return reverse('show_room', kwargs={'pageid': self.pk})
+        return reverse('show_room', kwargs={'roomid': self.pk})
     def get_user_address(self):
         return reverse('show_user', kwargs={'userid': 0})
 

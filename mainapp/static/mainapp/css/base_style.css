@@ -1,4 +1,5 @@
 body{
+            position: relative;
             background-color: #333333;
             color: #BBBBBB;
 
@@ -28,18 +29,35 @@ body{
 
 #create_room_button{
     position: relative;
-    top: 50px;
-    width: 50%;
-    height: 50px;
+    width: 100%;
+    height: 50%;
+    top: 20px;
     font-size: 150%;
 
 }
 
 #type_setter{
-    height: 40px;
+    height: 40%;
     width: 30%
 }
 
 #text_in_button{
     font-size: 120%;
 }
+
+.creating_inputs{
+    position: relative;
+    width: 20%;
+    height: 50%;
+}
+
+#select_inp{
+    width: 29%;
+    height: 30px;
+    font-size: 110%;
+}
+
+.errorlist
+    {
+        color: #DD5555;
+    }
