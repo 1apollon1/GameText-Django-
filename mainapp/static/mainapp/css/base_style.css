@@ -27,14 +27,8 @@ body{
     color: #AAAAAA;
 }
 
-#create_room_button{
-    position: relative;
-    width: 100%;
-    height: 50%;
-    top: 20px;
-    font-size: 150%;
 
-}
+
 
 #type_setter{
     height: 40%;
@@ -61,3 +55,24 @@ body{
     {
         color: #DD5555;
     }
+
+#create_room_button_content{
+    position: relative;
+    top: 20px;
+}
+
+#create_room_button{
+    width: 100%;
+    height: 30px;
+}
+
+.select_page{
+    position: relative;
+    top: 50px;
+    font-size: 200%;
+}
+
+#selected_page{
+    color: black;
+    font-size: 150%;
+}

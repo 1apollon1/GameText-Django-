@@ -19,6 +19,14 @@ def get_room(id):
 def show_types():
     return {'types': RoomType.objects.all()}
 
+@register.inclusion_tag('mainapp/list_pagination_content.html')
+def show_pag(pag, req, selpage):
+    def_dict = {'paginator': pag, 'selected_page': selpage}
+    for key in req.GET.keys():
+        def_dict[key] = req.GET[key]
+
+    return def_dict
+
 
 
 

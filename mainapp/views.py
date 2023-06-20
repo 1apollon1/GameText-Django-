@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
@@ -9,22 +10,27 @@ from django.views.generic.edit import CreateView
 # Create your views here.
 from django.http import HttpResponse, Http404
 from .models import *
+
 from django.shortcuts import redirect
 
+
+
 class Main(ListView):
+    paginate_by = 10
     model = Rooms
     context_object_name = 'rooms'
     template_name = 'mainapp/showrooms.html'
+    extra_context = {'title': 'Main'}
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
         context['types'] = RoomType.objects.all()
         return context
     def get_queryset(self):
-        print(self.request.GET.keys())
         if 'typid' in self.request.GET.keys() and self.request.GET['typid'].isdigit():
             queryset = Rooms.objects.filter(type_id = int(self.request.GET['typid']))
         else:
             queryset = Rooms.objects.all()
+        queryset = queryset.order_by('-create_date')
         return queryset
 
 
@@ -35,6 +41,11 @@ class ShowRoom(DetailView):
     pk_url_kwarg = 'roomid'
     template_name = 'mainapp/room.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['title'] = self.get_object().room_name
+        return context
+
 
 
 def show_user(request, userid):
@@ -44,8 +55,15 @@ def show_user(request, userid):
 
 
 
-class CreateRoomView(CreateView):
+class CreateRoomView(LoginRequiredMixin, CreateView):
     model = Rooms
     template_name = 'mainapp/create_room.html'
     form_class = CreateRoom
+    login_url = 'login'
     success_url = reverse_lazy('get_to_main')
+    extra_context = {'title': 'Create room page'}
+
+
+
+def login(request):
+    return HttpResponse('Login')
