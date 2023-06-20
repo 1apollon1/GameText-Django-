@@ -7,11 +7,12 @@
 
 
 <b class="page_output">
-
+        {% if request.user.is_authenticated %}
         <b id="create_room_button_content"><a href="{% url 'create_room' %}"><button id = 'create_room_button'><b id = 'text_in_button'>Create Room</b></button></a></b>
+        {% endif %}
         {% for room in page_obj %}
                 <hr>
-                <h1><a class="nolnk" href={{room.get_output_address}}>{{ room.room_name }}</a></h1><a class="nolnk" id="user_lnk" href={{room.get_user_address}}>{{ room.room_author_name }}</a class="nolnk"><br>
+                <h1><a class="nolnk" href={{room.get_output_address}}>{{ room.room_name }}</a></h1><a class="nolnk" id="user_lnk" href={{room.get_user_address}}>{{ room.author.username }}</a class="nolnk"><br>
         {% endfor %}
 </b>
 {% show_pag pag=paginator req=request selpage=page_obj.number%}

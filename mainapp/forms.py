@@ -7,10 +7,9 @@ class CreateRoom(forms.ModelForm):
 
     class Meta:
         model = Rooms
-        fields = '__all__'
+        fields = ['room_name', 'type']
         widgets = {
             'room_name': forms.TextInput(attrs = {'class': 'creating_inputs'}),
-            'room_author_name': forms.TextInput(attrs={'class': 'creating_inputs', }),
             'type': forms.Select(attrs={'class': 'creating_inputs', 'id': 'select_inp'}),
         }
 

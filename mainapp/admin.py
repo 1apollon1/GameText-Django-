@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import *
-
 from django.contrib import admin
 
 admin.site.site_header = "Text Game Admin"
@@ -20,6 +19,5 @@ class MainappAdmin(admin.ModelAdmin):
     show_full_result_count = False
 
 admin.site.register(Rooms, MainappAdmin)
-
 
 # Register your models here.

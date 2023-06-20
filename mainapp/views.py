@@ -60,8 +60,14 @@ class CreateRoomView(LoginRequiredMixin, CreateView):
     template_name = 'mainapp/create_room.html'
     form_class = CreateRoom
     login_url = 'login'
-    success_url = reverse_lazy('get_to_main')
     extra_context = {'title': 'Create room page'}
+
+    def form_valid(self, form):
+        room = form.save(commit=False)
+        room.author = self.request.user
+        room.save()
+        self.success_url = reverse_lazy('get_to_main')
+        return super(CreateRoomView, self).form_valid(form)
 
 
 

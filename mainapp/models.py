@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.shortcuts import reverse
-
+from authsys.models import CustomUser
 
 class RoomType(models.Model):
     type_name = models.CharField(max_length=100, unique=True)
@@ -14,7 +14,7 @@ my_own_errors = {
 }
 class Rooms(models.Model):
     room_name = models.CharField(max_length=100, unique=True, db_index=True, error_messages=my_own_errors)
-    room_author_name = models.CharField(max_length=100)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     type = models.ForeignKey(RoomType, on_delete=models.SET_DEFAULT, default=1)
