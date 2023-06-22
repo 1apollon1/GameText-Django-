@@ -23,6 +23,9 @@ from .sys_views import hand404
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainapp.urls')),
+    path('users/', include('authsys.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
+    path('captcha/', include('captcha.urls')),
 
 ]
 handler404 = hand404

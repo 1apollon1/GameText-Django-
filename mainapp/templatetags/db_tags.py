@@ -24,9 +24,11 @@ def show_pag(pag, req, selpage):
     def_dict = {'paginator': pag, 'selected_page': selpage}
     for key in req.GET.keys():
         def_dict[key] = req.GET[key]
-
     return def_dict
 
+@register.inclusion_tag('mainapp/show_main_panel.html')
+def show_panel(req):
+    return {'request': req}
 
 
 

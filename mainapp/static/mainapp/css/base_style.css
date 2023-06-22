@@ -2,7 +2,6 @@ body{
             position: relative;
             background-color: #333333;
             color: #BBBBBB;
-
 }
 
 .page_output{
@@ -35,7 +34,7 @@ body{
     width: 30%
 }
 
-#text_in_button{
+.text_in_button{
     font-size: 120%;
 }
 
@@ -75,4 +74,9 @@ body{
 #selected_page{
     color: black;
     font-size: 150%;
+}
+
+
+#panel_part{
+    background-color: red;
 }

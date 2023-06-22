@@ -16,7 +16,7 @@ class CreateRoom(forms.ModelForm):
     def clean_room_name(self):
         errors = []
         room_name = self.cleaned_data['room_name']
-        if room_name.__contains__('Fuck'):
+        if room_name.lower().__contains__('fuck'):
             errors.append(ValidationError('No swearing in room name'))
         if errors:
             raise ValidationError(errors)

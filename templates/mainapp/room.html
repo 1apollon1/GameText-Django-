@@ -1,9 +1,9 @@
 {% extends 'mainapp/base.html' %}
 {% block content %}
-<h1>{{room.room_name}}</h1>
+<h1>{{object.room_name}}</h1>
 <p>
-<b>{{ room.author.username }}
+<b>{{ object.author.username }}
     <br>
-{{room.create_date}}</b>
+{{object.create_date}}</b>
 
 {% endblock %}

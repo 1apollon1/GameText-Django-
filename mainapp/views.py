@@ -27,9 +27,9 @@ class Main(ListView):
         return context
     def get_queryset(self):
         if 'typid' in self.request.GET.keys() and self.request.GET['typid'].isdigit():
-            queryset = Rooms.objects.filter(type_id = int(self.request.GET['typid']))
+            queryset = Rooms.objects.filter(type_id = int(self.request.GET['typid'])).select_related('author')
         else:
-            queryset = Rooms.objects.all()
+            queryset = Rooms.objects.all().select_related('author')
         queryset = queryset.order_by('-create_date')
         return queryset
 
@@ -37,13 +37,12 @@ class Main(ListView):
 
 class ShowRoom(DetailView):
     model = Rooms
-    context_object_name = 'room'
     pk_url_kwarg = 'roomid'
     template_name = 'mainapp/room.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        context['title'] = self.get_object().room_name
+        context['title'] = self.object.room_name
         return context
 
 

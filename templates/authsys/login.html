@@ -1,0 +1,15 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{form.non_field_errors}}
+    {% for f in form %}
+
+        <p class = 'errors_message'>{{f.errors}}</p>
+        {{f.label}} -> {{f}}
+        <p>
+    {% endfor %}
+    <button type="submit" >Login</button>
+</form>
+{%endblock%}
