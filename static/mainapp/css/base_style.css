@@ -77,6 +77,6 @@ body{
     font-size: 150%;
 }
 
-#chat-message-submit{
-    height: 30px;
+#chat-log{
+    font-size: 20;
 }

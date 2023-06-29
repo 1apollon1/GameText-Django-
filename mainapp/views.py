@@ -6,6 +6,8 @@ from .forms import *
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from MagrasBox.settings import BASE_DIR
+
 
 # Create your views here.
 from django.http import HttpResponse, Http404
@@ -66,6 +68,9 @@ class CreateRoomView(LoginRequiredMixin, CreateView):
         room.author = self.request.user
         room.save()
         self.success_url = reverse_lazy('get_to_main')
+        path = f'{BASE_DIR}/chat/chats_data/{room.pk}.txt'
+        with open(path, "w") as f:
+            f.write("Welcome")
         return super(CreateRoomView, self).form_valid(form)
 
 

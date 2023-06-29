@@ -2,3 +2,4 @@ SETTINGS_DATA.json
 __pycache__
 db.sqlite3
 migrations
+chats_data

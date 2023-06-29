@@ -6,7 +6,7 @@ admin.site.site_header = "Text Game Admin"
 
 @admin.display(description="Here is name of rooms'author")
 def upper_case_author_name(obj):
-    return obj.room_author_name.upper()
+    return obj.author.username.upper()
 
 
 
