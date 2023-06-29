@@ -1,12 +1,22 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
+{% load chat_auth_tags %}
 {% block content %}
 
-<textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
-    <input  id="chat-message-input" type="text" alt="Submit" size="100"><br>
+<textarea readonly id="chat-log" class="chat-text-area" style="height: 500px; width: 630px;"></textarea>
+<textarea readonly id="action-log" class="chat-text-area" style="height: 500px; width: 630px;"></textarea>
+<br>
 
-    <input id="chat-message-submit" type="button" value="Send">
-    {{ room_name|json_script:"room-name" }}
+
+
+    {{ room.pk|json_script:"room-name" }}
+
+    {% if  request|is_member:room %}
+        <input  id="chat-message-input" type="text" alt="Submit" size="100" oninput="InpReaction()"><br>
+        <input disabled id="chat-message-submit" type="button" value="Send">
+    {% else %}
+        <h>You can only watch</h>
+    {% endif %}
     <script type="text/javascript" src="{% static 'chat/js/chat.js' %}"></script>
 
 {% endblock %}

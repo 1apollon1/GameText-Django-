@@ -55,25 +55,22 @@ def show_user(request, userid):
 
 
 
-
 class CreateRoomView(LoginRequiredMixin, CreateView):
     model = Rooms
     template_name = 'mainapp/create_room.html'
     form_class = CreateRoom
     login_url = 'login'
     extra_context = {'title': 'Create room page'}
-
     def form_valid(self, form):
         room = form.save(commit=False)
         room.author = self.request.user
         room.save()
+        room.members.add(self.request.user)
         self.success_url = reverse_lazy('get_to_main')
         path = f'{BASE_DIR}/chat/chats_data/{room.pk}.txt'
         with open(path, "w") as f:
-            f.write("Welcome")
+            f.write("Welcome\n")
         return super(CreateRoomView, self).form_valid(form)
 
 
 
-def login(request):
-    return HttpResponse('Login')

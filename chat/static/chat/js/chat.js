@@ -1,5 +1,4 @@
  var chatlog = document.getElementById('chat-log');
- console.log(chatlog)
 
  const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
@@ -13,7 +12,7 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            chatlog.innerHTML += data.message+'\n';
             chatlog.scrollTop = chatlog.scrollHeight;
         };
 
@@ -29,6 +28,7 @@
         };
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
+            document.getElementById('chat-message-submit').disabled = true
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
@@ -36,3 +36,12 @@
             }));
             messageInputDom.value = '';
         };
+function InpReaction(){
+    inpval = document.getElementById('chat-message-input').value
+    if (inpval != ''){
+        document.getElementById('chat-message-submit').disabled = false
+    }
+    else {
+        document.getElementById('chat-message-submit').disabled = true
+    }
+}

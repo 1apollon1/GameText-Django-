@@ -80,3 +80,10 @@ body{
 #panel_part{
     background-color: red;
 }
+
+.chat-text-area{
+    font-size: 20px;
+    background-color: #FFF88F;
+    color: black;
+    resize: None;
+}

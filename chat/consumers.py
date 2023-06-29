@@ -2,6 +2,8 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from django.core.exceptions import ValidationError
+
 from MagrasBox.settings import BASE_DIR
 
 
@@ -29,7 +31,7 @@ class ChatConsumer(WebsocketConsumer):
         self.chat_path = f'{BASE_DIR}/chat/chats_data/{self.scope["url_route"]["kwargs"]["room_id"]}.txt'
         with open(self.chat_path) as f:
             current_chat_text = f.read()
-        self.send(text_data=json.dumps({"message": current_chat_text}))
+        self.send(text_data=json.dumps({"message": f'{current_chat_text}<---->Old messages<---->'}))
 
 
     def disconnect(self, close_code):
