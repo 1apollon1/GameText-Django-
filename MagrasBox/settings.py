@@ -33,6 +33,9 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+    'chat',
     'captcha',
     "debug_toolbar",
     'authsys.apps.AuthsysConfig',
@@ -43,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 MIDDLEWARE = [
@@ -83,8 +87,17 @@ TEMPLATES = [
 
 
 
-
 WSGI_APPLICATION = 'MagrasBox.wsgi.application'
+ASGI_APPLICATION = 'MagrasBox.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("192.168.99.100", 6379)],
+        },
+    },
+}
 
 
 # Database
@@ -148,8 +161,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authsys.CustomUser'
 
+
+
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
     # ...
 ]
+
+
+

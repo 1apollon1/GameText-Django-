@@ -22,7 +22,7 @@ class Rooms(models.Model):
     def __str__(self):
         return self.room_name
     def get_output_address(self):
-        return reverse('show_room', kwargs={'roomid': self.pk})
+        return reverse('show_room', kwargs={'room_id': self.pk})
     def get_user_address(self):
         return reverse('show_user', kwargs={'userid': 0})
 

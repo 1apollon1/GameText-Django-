@@ -76,3 +76,7 @@ body{
     color: black;
     font-size: 150%;
 }
+
+#chat-message-submit{
+    height: 30px;
+}

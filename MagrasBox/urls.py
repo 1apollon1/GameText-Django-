@@ -26,6 +26,7 @@ urlpatterns = [
     path('users/', include('authsys.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
     path('captcha/', include('captcha.urls')),
+    path('roomchat/', include('chat.urls')),
 
 ]
 handler404 = hand404
