@@ -3,7 +3,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.core.exceptions import ValidationError
-
+from . import act_constructor
 from MagrasBox.settings import BASE_DIR
 
 
@@ -29,9 +29,13 @@ class ChatConsumer(WebsocketConsumer):
 
 
         self.chat_path = f'{BASE_DIR}/chat/chats_data/{self.scope["url_route"]["kwargs"]["room_id"]}.txt'
+        self.action_path = f'{BASE_DIR}/chat/actions_data/{self.scope["url_route"]["kwargs"]["room_id"]}.txt'
         with open(self.chat_path) as f:
             current_chat_text = f.read()
         self.send(text_data=json.dumps({"message": f'{current_chat_text}<---->Old messages<---->'}))
+        with open(self.action_path) as f:
+            current_actions = f.read()
+        self.send(text_data=json.dumps({"message": f'!{current_actions}<---->Old actions<---->'}))
 
 
     def disconnect(self, close_code):
@@ -43,13 +47,27 @@ class ChatConsumer(WebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        author = self.scope['user'].membership_set.get(room_id=self.scope["url_route"]["kwargs"]["room_id"]).role
         message = text_data_json["message"]
+        is_command = False
         # Send message to room group
+        if message[0] == '/':
+            message = act_constructor.com_catcher(author, message)
+            is_command=True
+        else:
+            message = f'{author}: {message}'
+        if message or message[0] == '!':
 
-        write_in(message, self.chat_path)
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {"type": "chat_message", "message": message}
-        )
+            if not is_command:
+                write_in(message, self.chat_path)
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name, {"type": "chat_message", "message": message}
+                )
+            else:
+                write_in(message, self.action_path)
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name, {"type": "chat_message", "message": f'!{message}'}
+                )
 
     # Receive message from room group
     def chat_message(self, event):

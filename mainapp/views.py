@@ -7,6 +7,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from MagrasBox.settings import BASE_DIR
+import os
 
 
 # Create your views here.
@@ -61,15 +62,29 @@ class CreateRoomView(LoginRequiredMixin, CreateView):
     form_class = CreateRoom
     login_url = 'login'
     extra_context = {'title': 'Create room page'}
+
+
+    def create_data(self, room):
+        path_t = f"{BASE_DIR}/chat/chats_data/"
+        path_a = f"{BASE_DIR}/chat/actions_data/"
+
+        if not os.path.exists(path_t):
+            os.makedirs(path_t)
+        if not os.path.exists(path_a):
+            os.makedirs(path_a)
+
+
+        with open(f'{path_t}{room.pk}', "w") as f:
+            f.write("Welcome\n")
+        with open(f'{path_a}{room.pk}', "w") as f:
+            f.write("")
     def form_valid(self, form):
         room = form.save(commit=False)
         room.author = self.request.user
         room.save()
         room.members.add(self.request.user)
         self.success_url = reverse_lazy('get_to_main')
-        path = f'{BASE_DIR}/chat/chats_data/{room.pk}.txt'
-        with open(path, "w") as f:
-            f.write("Welcome\n")
+        self.create_data(room)
         return super(CreateRoomView, self).form_valid(form)
 
 

@@ -3,8 +3,9 @@ from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from django.shortcuts import render, redirect
-from mainapp.models import *
+from django.views.generic import FormView
 
+from mainapp.models import *
 
 
 def room(request, room_id):

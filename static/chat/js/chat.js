@@ -1,4 +1,7 @@
+ var chatlog = document.getElementById('chat-log');
+ var actionlog = document.getElementById('action-log');
  const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -9,7 +12,15 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            if (data.message[0] != '!'){
+                chatlog.innerHTML += data.message+'\n';
+                chatlog.scrollTop = chatlog.scrollHeight;
+            }
+            else{
+                actionlog.innerHTML += data.message.slice(1)+'\n';
+                actionlog.scrollTop = chatlog.scrollHeight;
+            }
+
         };
 
         chatSocket.onclose = function(e) {
@@ -24,6 +35,7 @@
         };
 
         document.querySelector('#chat-message-submit').onclick = function(e) {
+            document.getElementById('chat-message-submit').disabled = true
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
@@ -31,3 +43,12 @@
             }));
             messageInputDom.value = '';
         };
+function InpReaction(){
+    inpval = document.getElementById('chat-message-input').value
+    if (inpval != ''){
+        document.getElementById('chat-message-submit').disabled = false
+    }
+    else {
+        document.getElementById('chat-message-submit').disabled = true
+    }
+}

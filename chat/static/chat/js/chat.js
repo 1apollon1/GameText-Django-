@@ -1,5 +1,5 @@
  var chatlog = document.getElementById('chat-log');
-
+ var actionlog = document.getElementById('action-log');
  const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket(
@@ -12,8 +12,15 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            chatlog.innerHTML += data.message+'\n';
-            chatlog.scrollTop = chatlog.scrollHeight;
+            if (data.message[0] != '!'){
+                chatlog.innerHTML += data.message+'\n';
+                chatlog.scrollTop = chatlog.scrollHeight;
+            }
+            else{
+                actionlog.innerHTML += data.message.slice(1)+'\n';
+                actionlog.scrollTop = chatlog.scrollHeight;
+            }
+
         };
 
         chatSocket.onclose = function(e) {
