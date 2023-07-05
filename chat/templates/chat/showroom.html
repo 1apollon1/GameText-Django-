@@ -3,8 +3,19 @@
 {% load chat_auth_tags %}
 {% block content %}
 
-<textarea readonly id="chat-log" class="chat-text-area" style="height: 500px; width: 630px;"></textarea>
-<textarea readonly id="action-log" class="chat-text-area" style="height: 500px; width: 630px; color:#9932CC;"></textarea>
+<textarea readonly id="chat-log" class="chat-text-area" style="
+height: {{room.chat_height}}px;
+width: {{room.chat_width}}px;
+background-color: {{room.chat_background_color}};
+color: {{room.chat_font_color}}
+"></textarea>
+<textarea readonly id="action-log" class="chat-text-area" style="
+height: {{room.action_chat_height}}px;
+width: {{room.action_chat_width}}px;
+background-color: {{room.action_chat_background_color}};
+color: {{room.action_chat_font_color}}
+
+"></textarea>
 <br>
 
 

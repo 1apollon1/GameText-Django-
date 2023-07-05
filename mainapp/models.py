@@ -25,6 +25,16 @@ class Rooms(models.Model):
     type = models.ForeignKey(RoomType, on_delete=models.SET_DEFAULT, default=1)
     members = models.ManyToManyField(CustomUser, through='Membership')
 
+    chat_background_color = models.CharField(default='#fff88f')
+    chat_font_color = models.CharField(default='#000000')
+    chat_height = models.IntegerField(default=500)
+    chat_width = models.IntegerField(default=630)
+
+    action_chat_background_color = models.CharField(default='#fff88f')
+    action_chat_font_color = models.CharField(default='#000000')
+    action_chat_height = models.IntegerField(default=500)
+    action_chat_width = models.IntegerField(default=630)
+
     def __str__(self):
         return self.room_name
     def get_output_address(self):
@@ -51,6 +61,7 @@ class Membership(models.Model):
     room_id = models.ForeignKey(Rooms, on_delete=models.CASCADE)
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     role = models.CharField(max_length=100, default='With no role')
+    can_write = models.BooleanField(default=False)
 
     class Meta:
         constraints = [

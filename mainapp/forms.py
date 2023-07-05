@@ -22,9 +22,11 @@ class CreateRoom(forms.ModelForm):
             raise ValidationError(errors)
         else:
             return room_name
+
+
     def clean_room_author_name(self):
         author_name = self.cleaned_data['room_author_name']
         if author_name.lower().__contains__('maga'):
-            raise ValidationError('Here is my name, change it')
+            raise ValidationError('Hey! Here is my name, change it!')
         else:
             return author_name
