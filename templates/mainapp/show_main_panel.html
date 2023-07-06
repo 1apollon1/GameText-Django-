@@ -1,7 +1,7 @@
  <a href = "{% url 'get_to_main' %}">
     <button class="panel_buttons"><b class="text_in_button">Main Page</b></button>
  </a>
- <span class="auth-data">
+ <span style="float: right;">
     {% if request.user.is_authenticated %}
          <b id="auth-data">{{request.user.username}}</b>
     <a href="{% url 'logout' %}">
@@ -14,7 +14,5 @@
      <a href="{% url 'login' %}">
     <button class="panel_buttons"><b class="text_in_button">Login</b></button>
     </a>
-     <dialog id="login-dialog">
-     </dialog>
 {% endif %}
  </span>

@@ -84,11 +84,13 @@ class CreateRoomView(LoginRequiredMixin, CreateView):
             f.write("Welcome\n")
         with open(f'{path_a}{room.pk}.txt', "w") as f:
             f.write("")
+
+
     def form_valid(self, form):
         room = form.save(commit=False)
         room.author = self.request.user
         room.save()
-        room.members.add(self.request.user)
+        Membership.objects.create(room = room, user = self.request.user, can_write=True)
         self.success_url = reverse_lazy('get_to_main')
         self.create_data(room)
         return super(CreateRoomView, self).form_valid(form)

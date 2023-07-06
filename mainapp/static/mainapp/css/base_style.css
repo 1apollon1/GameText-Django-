@@ -17,10 +17,9 @@ body{
 
 
 .panel_buttons {
-    position: relative;
-    width: 20%;
     font-size:80%;
 }
+
 
 #user_lnk{
     color: #AAAAAA;
@@ -29,10 +28,7 @@ body{
 
 
 
-#type_setter{
-    height: 40%;
-    width: 30%
-}
+
 
 .text_in_button{
     font-size: 120%;
@@ -86,4 +82,13 @@ body{
     background-color: #FFF88F;
     color: black;
     resize: None;
+}
+.manage-members-inputs{
+    font-size: 80%;
+    position:
+    relative;
+    bottom:2px;
+    background-color:
+    black; color:
+    white;
 }

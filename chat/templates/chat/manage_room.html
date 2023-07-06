@@ -1,15 +1,16 @@
 {% extends 'mainapp/base.html' %}
+{% load chat_auth_tags %}
 
 {% block content %}
 <div style="font-size: 20px;">
       <form method="post">
     {% csrf_token %}
-          {{ form.as_p }}
+            <span style="float: left;">
+                          {{ form.as_p }}
           <input style="font-size: 30px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
-          <a href="#"><button type="button" style="font-size: 20px;">Options</button></a>
-          <a href="#"><button type="button" style="font-size: 20px;">Members</button></a>
-          <a href="#"><button type="button" style="font-size: 20px;">Applications</button></a>
-          <a href="{% url 'delete_room' room_id=object.pk %}"><button type="button" style="font-size: 20px; background-color: red; color: white;">Delete room</button></a>
+            </span>
+
+          {% show_manage_tools room_id=object.pk %}
     </form>
 
 </div>

@@ -13,6 +13,8 @@ class RoomType(models.Model):
 
     def __str__(self):
         return self.type_name
+
+
 my_own_errors = {
     'unique': 'Such name taken already'
 
@@ -58,8 +60,8 @@ class Rooms(models.Model):
 
 
 class Membership(models.Model):
-    room_id = models.ForeignKey(Rooms, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    room = models.ForeignKey(Rooms, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     role = models.CharField(max_length=100, default='With no role')
     can_write = models.BooleanField(default=False)
 
@@ -69,5 +71,6 @@ class Membership(models.Model):
         ]
 
 admin.site.register(RoomType)
+admin.site.register(Membership)
 
 # Create your models here.

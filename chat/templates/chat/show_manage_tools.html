@@ -1,0 +1,13 @@
+
+
+
+
+<span style="float:right;">
+<a href="{% url 'manage_room_options' room_id=rid %}"><button type="button" style="font-size: 20px;">Options</button></a>
+    <p></p>
+<a href="{% url 'manage_room_members' room_id=rid %}"><button type="button" style="font-size: 20px;">Members</button></a>
+    <p></p>
+    <a href="#"><button type="button" style="font-size: 20px;">Applications</button></a>
+    <p></p>
+    <a href="{% url 'delete_room' room_id=rid %}"><button type="button" style="font-size: 20px; background-color: red; color: white;">Delete room</button></a>
+</span>

@@ -1,0 +1,32 @@
+{% extends 'mainapp/base.html' %}
+{% load chat_auth_tags %}
+
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <span style="float:left;">
+        {% for m in members %}
+    <div style="font-size: 150%;">
+        <span style="black; color: white;">
+
+        </span>
+
+            <b style="color: white;">
+                {{m.user.username}}
+            </b>
+
+        <span style="background-color: white; color: black;">
+
+                Role: <input name="{{m.pk}}|role" class="manage-members-inputs" type="text" value="{{m.role}}">
+                Can write: {% if m.can_write %}<input name="{{m.pk}}|can_write" type="checkbox" checked> {% else %}<input name="{{m.user.pk}}|can_write" type="checkbox">{% endif%}
+        </span>
+    </div>
+{% endfor %}
+      <input style="font-size: 30px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
+    </span>
+</form>
+
+    {% show_manage_tools room_id=room_id %}
+{% endblock %}
