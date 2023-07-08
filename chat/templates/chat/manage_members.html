@@ -20,7 +20,7 @@
         <span style="background-color: white; color: black;">
 
                 Role: <input name="{{m.pk}}|role" class="manage-members-inputs" type="text" value="{{m.role}}">
-                Can write: {% if m.can_write %}<input name="{{m.pk}}|can_write" type="checkbox" checked> {% else %}<input name="{{m.user.pk}}|can_write" type="checkbox">{% endif%}
+                Can write: {% if m.can_write %}<input name="{{m.pk}}|can_write" type="checkbox" checked> {% else %}<input name="{{m.pk}}|can_write" type="checkbox">{% endif%}
                 Kick: <input name="{{m.pk}}|kick" type="checkbox">
         </span>
         {% else %}

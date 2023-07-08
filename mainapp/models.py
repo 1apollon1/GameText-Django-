@@ -76,6 +76,11 @@ class Application(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='applications')
     last_sent_date = models.DateTimeField(null=False)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['room_id', 'user_id'], name='unique_application')
+        ]
+
 admin.site.register(RoomType)
 admin.site.register(Membership)
 admin.site.register(Application)

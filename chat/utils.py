@@ -11,9 +11,8 @@ def get_change_dict(request):
         except ValueError:
             continue
         if member not in change_dict.keys():
-            print(request.user.username, CustomUser.objects.get(pk=member))
+            print(member)
             if request.user == Membership.objects.get(pk=member).user:
-
                 change_dict[member] = {'role': ''}
             else:
                 change_dict[member] = {'role': '',
@@ -36,3 +35,12 @@ def edit_members(change_dict: dict):
 def get_days_delta(time):
     delta = datetime.now() - time
     return delta.seconds//(3600)
+
+
+
+def only_for_author(func):
+    def wrapper(request, room_id):
+        if room_id not in request.user.created_posts.values_list('pk', flat=True):
+            raise PermissionError('You are not author of this room')
+        return func(request, room_id)
+    return wrapper

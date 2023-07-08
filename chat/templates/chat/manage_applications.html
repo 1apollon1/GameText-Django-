@@ -1,0 +1,9 @@
+{% extends 'mainapp/base.html %}
+
+{% block content %}
+{% for a in applications %}
+<p>
+a.user.username: <button value="{{a.pk|a}}" style="background-color: green; color: white" >Accept</button>  <button value="{{a.pk|r}}" style="background-color: red; color: white" >Reject</button>
+</p>
+{% endfor %}
+{% endblock %}

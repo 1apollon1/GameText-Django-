@@ -28,7 +28,7 @@ color: {{room.action_chat_font_color}}
     {% else %}
         {% if not application_sent %}
         <h>You can only watch</h>
-        <a href="#"><button>Applicate for join</button> </a>
+        <a href="{% url 'applicate' room_id=room.pk %}"><button>Applicate for join</button> </a>
         {% else %}
         <b style="color: green">You applicated for join recently</b>
         {% endif %}
