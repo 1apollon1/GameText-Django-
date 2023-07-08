@@ -70,7 +70,14 @@ class Membership(models.Model):
             models.UniqueConstraint(fields=['room_id', 'user_id'], name='unique_membership')
         ]
 
+
+class Application(models.Model):
+    room = models.ForeignKey(Rooms, on_delete=models.CASCADE, related_name='applications')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='applications')
+    last_sent_date = models.DateTimeField(null=False)
+
 admin.site.register(RoomType)
 admin.site.register(Membership)
+admin.site.register(Application)
 
 # Create your models here.

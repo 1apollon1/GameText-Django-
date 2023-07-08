@@ -26,11 +26,17 @@ color: {{room.action_chat_font_color}}
         <input  id="chat-message-input" type="text" alt="Submit" size="100" oninput="InpReaction()"><br>
         <input disabled id="chat-message-submit" type="button" value="Send">
     {% else %}
+        {% if not application_sent %}
         <h>You can only watch</h>
+        <a href="#"><button>Applicate for join</button> </a>
+        {% else %}
+        <b style="color: green">You applicated for join recently</b>
+        {% endif %}
     {% endif %}
     {% if request.user == room.author %}
     <a href="{% url 'manage_room_options' room_id=room.pk %}"><button>Manage</button></a>
     {% endif %}
+
     <script type="text/javascript" src="{% static 'chat/js/chat.js' %}"></script>
 
 {% endblock %}

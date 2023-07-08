@@ -1,4 +1,6 @@
+from authsys.models import CustomUser
 from mainapp.models import Membership
+from datetime import datetime
 
 def get_change_dict(request):
     change_dict = {}
@@ -9,7 +11,9 @@ def get_change_dict(request):
         except ValueError:
             continue
         if member not in change_dict.keys():
-            if request.user.pk == member:
+            print(request.user.username, CustomUser.objects.get(pk=member))
+            if request.user == Membership.objects.get(pk=member).user:
+
                 change_dict[member] = {'role': ''}
             else:
                 change_dict[member] = {'role': '',
@@ -27,3 +31,8 @@ def edit_members(change_dict: dict):
             Membership.objects.get(pk=memid).delete()
             continue
         Membership.objects.filter(id=memid).update(**change_dict[memid])
+
+
+def get_days_delta(time):
+    delta = datetime.now() - time
+    return delta.seconds//(3600)

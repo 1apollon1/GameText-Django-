@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
+
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView
@@ -13,6 +14,7 @@ from .utils import *
 class ManageRoomOptions(UpdateView):
     template_name = 'chat/manage_room.html'
 
+    extra_context = {'title': "Room's options"}
 
     def get_success_url(self):
         return reverse_lazy('show_room', kwargs={'room_id': self.object.pk})
@@ -28,7 +30,7 @@ class ManageRoomOptions(UpdateView):
 
 
 def manage_room_members(request, room_id):
-    members = Membership.objects.filter(room_id=room_id).select_related()
+    members = Membership.objects.filter(room=room_id).select_related()
     if request.user != members[0].room.author:
         raise PermissionError('You are not author of this room')
 
@@ -37,13 +39,25 @@ def manage_room_members(request, room_id):
         edit_members(change_dict)
         return redirect('show_room', room_id=room_id)
     else:
-        return render(request, template_name='chat/manage_members.html', context={'members': members, 'room': members[0].room})
+        return render(request, template_name='chat/manage_members.html', context={'members': members, 'room': members[0].room, 'title': "Room's members"})
 
 
 def room(request, room_id):
     room = get_object_or_404(Rooms, pk = room_id)
+    application_sent = False
+    try:
+        application = Application.objects.get(room=room, user=request.user)
+        if get_days_delta(application.last_sent_date) < 4:
+            application_sent=True
+    except:
+        pass
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, "chat/showroom.html", {"room": room, 'title': f'Room {room_id}'})
+    return render(request, "chat/showroom.html", {"room": room, 'title': f'Room {room_id}', 'application_sent': application_sent})
+
+
+
+
+
 
 
