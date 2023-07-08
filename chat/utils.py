@@ -9,9 +9,12 @@ def get_change_dict(request):
         except ValueError:
             continue
         if member not in change_dict.keys():
-            change_dict[member] = {'role': '',
-                                   'can_write': False
-                                   }
+            if request.user.pk == member:
+                change_dict[member] = {'role': ''}
+            else:
+                change_dict[member] = {'role': '',
+                                       'can_write': False
+                                       }
         value = request.POST.get(key)
         if value == 'on':
             value = True
@@ -20,4 +23,7 @@ def get_change_dict(request):
 
 def edit_members(change_dict: dict):
     for memid in change_dict:
+        if 'kick' in change_dict[memid]:
+            Membership.objects.get(pk=memid).delete()
+            continue
         Membership.objects.filter(id=memid).update(**change_dict[memid])

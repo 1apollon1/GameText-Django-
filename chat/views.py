@@ -37,7 +37,7 @@ def manage_room_members(request, room_id):
         edit_members(change_dict)
         return redirect('show_room', room_id=room_id)
     else:
-        return render(request, template_name='chat/manage_members.html', context={'members': members, 'room_id': members[0].room.pk})
+        return render(request, template_name='chat/manage_members.html', context={'members': members, 'room': members[0].room})
 
 
 def room(request, room_id):

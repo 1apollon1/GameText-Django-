@@ -16,17 +16,23 @@
             <b style="color: white;">
                 {{m.user.username}}
             </b>
-
+        {% if m.user != room.author %}
         <span style="background-color: white; color: black;">
 
                 Role: <input name="{{m.pk}}|role" class="manage-members-inputs" type="text" value="{{m.role}}">
                 Can write: {% if m.can_write %}<input name="{{m.pk}}|can_write" type="checkbox" checked> {% else %}<input name="{{m.user.pk}}|can_write" type="checkbox">{% endif%}
+                Kick: <input name="{{m.pk}}|kick" type="checkbox">
         </span>
+        {% else %}
+         <span style="background-color: white; color: black;">
+                Role: <input name="{{m.pk}}|role" class="manage-members-inputs" type="text" value="{{m.role}}">
+        </span>
+        {% endif %}
     </div>
 {% endfor %}
       <input style="font-size: 30px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
     </span>
 </form>
 
-    {% show_manage_tools room_id=room_id %}
+    {% show_manage_tools room_id=room.pk %}
 {% endblock %}
