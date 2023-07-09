@@ -22,12 +22,13 @@ color: {{room.action_chat_font_color}}
 
     {{ room.pk|json_script:"room-name" }}
 
-    {% if  request|can_write:room %}
+    {% if member and member.can_write %}
         <input  id="chat-message-input" type="text" alt="Submit" size="100" oninput="InpReaction()"><br>
         <input disabled id="chat-message-submit" type="button" value="Send">
+    {% elif member %}
+         <h>You can only watch</h>
     {% else %}
         {% if not application_sent %}
-        <h>You can only watch</h>
         <a href="{% url 'applicate' room_id=room.pk %}"><button>Applicate for join</button> </a>
         {% else %}
         <b style="color: green">You applicated for join recently</b>

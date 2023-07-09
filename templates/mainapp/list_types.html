@@ -2,6 +2,7 @@
 
 {% cache 300 types_panel %}
 {% for type in types %}
-<a href="{% url 'get_to_main' %}?typid={{ type.id }}"><button id="type_setter" class="panel_buttons"><b id="text_in_button">{{ type.type_name }}</b></button></a>
+<a href="{% url 'get_to_main' %}?typid={{ type.id }}"><button class="panel_buttons"><b>{{ type.type_name }}</b></button></a>
 {% endfor %}
+<a href="{% url 'get_to_main' %}"><button class="panel_buttons"><b>All</b></button></a>
 {% endcache %}

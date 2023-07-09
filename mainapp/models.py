@@ -74,7 +74,8 @@ class Membership(models.Model):
 class Application(models.Model):
     room = models.ForeignKey(Rooms, on_delete=models.CASCADE, related_name='applications')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='applications')
-    last_sent_date = models.DateTimeField(null=False)
+    reject_date = models.DateTimeField(null=True)
+    was_rejected = models.BooleanField(default=False)
 
     class Meta:
         constraints = [

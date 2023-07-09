@@ -13,6 +13,8 @@ from .forms import *
 from .utils import *
 
 
+
+
 class ManageRoomOptions(UpdateView):
     template_name = 'chat/manage_room.html'
 
@@ -30,6 +32,9 @@ class ManageRoomOptions(UpdateView):
         return ManageRoomOptionsForm
 
 
+
+
+
 @only_for_author
 def manage_room_members(request, room_id):
     members = Membership.objects.filter(room=room_id).select_related()
@@ -38,7 +43,11 @@ def manage_room_members(request, room_id):
         edit_members(change_dict)
         return redirect('show_room', room_id=room_id)
     else:
-        return render(request, template_name='chat/manage_members.html', context={'members': members, 'room': members[0].room, 'title': "Room's members"})
+        return render(request, template_name='chat/manage_members.html', context={'members': members, 'rid': room_id, 'title': "Room's members"})
+
+
+
+
 
 
 def room(request, room_id):
@@ -47,38 +56,55 @@ def room(request, room_id):
     application_sent = False
     try:
         application = Application.objects.get(room=room, user=request.user)
-        if get_days_delta(application.last_sent_date) < 4:
-            application_sent=True
-        elif 'send_application' in request.POST.keys():
-            application.last_sent_date = datetime.datetime.now()
-    except:
-        if 'send_application' in request.POST.keys():
-            Application.objects.create(room=room, user=request.user, application_sent=datetime.datetime.now())
+        application_sent = True
+        if application.was_rejected and get_days_delta(application.reject_date) >= 4:
+            application_sent=False
+    except Application.DoesNotExist:
+        pass
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, "chat/showroom.html", {"room": room, 'title': f'Room {room_id}', 'application_sent': application_sent})
+    try:
+        member = Membership.objects.get(room_id=room_id, user_id=request.user.pk)
+    except Membership.DoesNotExist:
+        member = None
+    return render(request, "chat/showroom.html", {"room": room, 'title': f'Room {room_id}', 'application_sent': application_sent, 'member': member})
 
 
 
-def application(request, room_id):
+
+
+
+
+def application_send(request, room_id):
     if request.user.pk in Membership.objects.filter(room_id=room_id).values_list('user', flat=True):
         raise ValidationError('You are member already')
     try:
-        a1 = Application.objects.first()
         application = Application.objects.get(user_id=request.user.pk, room_id=room_id)
-        if get_days_delta(application.last_sent_date) < 4:
-            raise ValidationError('You applicated recently already')
-        application.last_sent_date = datetime.now()
+        if not application.was_rejected:
+            raise ValidationError("Wait for your application's accept/reject")
+        elif get_days_delta(application.reject_date) < 4:
+            raise ValidationError("Your applicated recently")
+        application.reject_date = None
+        application.was_rejected = False
+        application.save()
     except Application.DoesNotExist:
-        Application.objects.create(user=request.user, room_id=room_id, last_sent_date = datetime.now())
+        Application.objects.create(user=request.user, room_id=room_id)
     return redirect('show_room', room_id=room_id)
+
+
+
+
+
 
 @only_for_author
 def manage_applications(request, room_id):
-    applications = Application.objects.filter(room=room_id).select_related()
+    applications = Application.objects.filter(room=room_id, was_rejected=False).select_related()
     if request.method == 'POST':
-        change_dict = get_change_dict(request)
-        edit_members(change_dict)
-        return redirect('manage_room_members', room_id=room_id)
+        for a in request.POST.keys():
+            if request.POST[a] == 'A':
+                Membership.objects.create(room_id=room_id, user_id=int(a))
+            else:
+                applications.update(was_rejected=True, reject_date=datetime.now())
     else:
-        return render(request, template_name='chat/manage_applications.html', context={'applications': applications, 'room': applications[0].room, 'title': "Room's applications"})
+        pass
+    return render(request, template_name='chat/manage_applications.html', context={'applications': applications, 'rid': room_id, 'title': "Room's applications"})

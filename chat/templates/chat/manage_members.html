@@ -16,7 +16,8 @@
             <b style="color: white;">
                 {{m.user.username}}
             </b>
-        {% if m.user != room.author %}
+
+        {% if m.user != request.user %}
         <span style="background-color: white; color: black;">
 
                 Role: <input name="{{m.pk}}|role" class="manage-members-inputs" type="text" value="{{m.role}}">
@@ -34,5 +35,5 @@
     </span>
 </form>
 
-    {% show_manage_tools room_id=room.pk %}
+    {% show_manage_tools room_id=rid %}
 {% endblock %}

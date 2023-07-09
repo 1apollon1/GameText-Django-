@@ -1,9 +1,22 @@
-{% extends 'mainapp/base.html %}
+{% extends 'mainapp/base.html' %}
+{% load chat_auth_tags %}
 
 {% block content %}
+
+<form method="post">
+    {% csrf_token %}
+ <span style="float: left;">
 {% for a in applications %}
 <p>
-a.user.username: <button value="{{a.pk|a}}" style="background-color: green; color: white" >Accept</button>  <button value="{{a.pk|r}}" style="background-color: red; color: white" >Reject</button>
+    <b style="color: white;">{{a.user.username}}:</b>
+    <b style="color: green">Accept:</b> <input type="radio" value="A" name="{{a.user.pk}}">
+    <b style="color: red">Reject:</b> <input type="radio" value="R" name="{{a.user.pk}}">
 </p>
+
 {% endfor %}
+          <input style="font-size: 30px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
+     </span>
+</form>
+
+    {% show_manage_tools room_id=rid %}
 {% endblock %}

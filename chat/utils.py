@@ -1,5 +1,5 @@
 from authsys.models import CustomUser
-from mainapp.models import Membership
+from mainapp.models import *
 from datetime import datetime
 
 def get_change_dict(request):
@@ -27,7 +27,9 @@ def get_change_dict(request):
 def edit_members(change_dict: dict):
     for memid in change_dict:
         if 'kick' in change_dict[memid]:
-            Membership.objects.get(pk=memid).delete()
+            member = Membership.objects.get(pk=memid)
+            Application.objects.filter(room_id=member.room_id, user_id=member.user_id).update(was_rejected=True, reject_date=datetime.now())
+            member.delete()
             continue
         Membership.objects.filter(id=memid).update(**change_dict[memid])
 
@@ -38,9 +40,17 @@ def get_days_delta(time):
 
 
 
+
+
+
+#decorator
 def only_for_author(func):
     def wrapper(request, room_id):
         if room_id not in request.user.created_posts.values_list('pk', flat=True):
             raise PermissionError('You are not author of this room')
         return func(request, room_id)
     return wrapper
+#decorator
+
+
+
