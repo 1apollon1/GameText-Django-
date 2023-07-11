@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import CustomUser
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from captcha.fields import CaptchaField
@@ -16,10 +18,22 @@ class SignUpForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
         strip=False,
     )
+
+    avatar = forms.ImageField(
+        label='Your avatar',
+        widget=forms.FileInput(attrs={'accept': "image/png, image/gif, image/jpeg"}),
+        required=False
+    )
     class Meta:
         model = CustomUser
-        fields = ['username', 'password1', 'password2']
+        fields = ['username', 'password1', 'password2', 'avatar']
 
+
+    def clean_avatar(self):
+        image = self.cleaned_data['avatar']
+        if image and image.size//1024//1024 > 5:
+            raise ValidationError('Too big image')
+        return image
 
 class SignInForm(AuthenticationForm):
     error_messages = {

@@ -1,6 +1,6 @@
 import datetime
 
-from django.core.exceptions import ValidationError
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -15,9 +15,9 @@ from .utils import *
 
 
 
-class ManageRoomOptions(UpdateView):
+class ManageRoomOptions(LoginRequiredMixin,UpdateView):
     template_name = 'chat/manage_room.html'
-
+    login_url = reverse_lazy('login')
     extra_context = {'title': "Room's options"}
 
     def get_success_url(self):
@@ -34,7 +34,7 @@ class ManageRoomOptions(UpdateView):
 
 
 
-
+@login_required
 @only_for_author
 def manage_room_members(request, room_id):
     members = Membership.objects.filter(room=room_id).select_related()
@@ -49,7 +49,7 @@ def manage_room_members(request, room_id):
 
 
 
-
+@login_required
 def room(request, room_id):
 
     room = get_object_or_404(Rooms, pk = room_id)
@@ -74,16 +74,16 @@ def room(request, room_id):
 
 
 
-
+@login_required
 def application_send(request, room_id):
     if request.user.pk in Membership.objects.filter(room_id=room_id).values_list('user', flat=True):
-        raise ValidationError('You are member already')
+        raise Exception('You are member already')
     try:
         application = Application.objects.get(user_id=request.user.pk, room_id=room_id)
         if not application.was_rejected:
-            raise ValidationError("Wait for your application's accept/reject")
+            raise Exception("Wait for your application's accept/reject")
         elif get_days_delta(application.reject_date) < 4:
-            raise ValidationError("Your applicated recently")
+            raise Exception("Your applicated recently")
         application.reject_date = None
         application.was_rejected = False
         application.save()
@@ -95,7 +95,7 @@ def application_send(request, room_id):
 
 
 
-
+@login_required
 @only_for_author
 def manage_applications(request, room_id):
     applications = Application.objects.filter(room=room_id, was_rejected=False).select_related()

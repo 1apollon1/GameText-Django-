@@ -5,18 +5,21 @@
 
 <form method="post">
     {% csrf_token %}
- <span style="float: left;">
+ <span style="float: left; font-size: 25px;">
 {% for a in applications %}
 <p>
+    {% if a.user.avatar %}
+    <img style="border-radius: 50%; overflow:hidden; vertical-align: middle;" src="{{a.user.avatar.url}}" height="50" width="50" >
+    {% endif %}
     <b style="color: white;">{{a.user.username}}:</b>
     <b style="color: green">Accept:</b> <input type="radio" value="A" name="{{a.user.pk}}">
     <b style="color: red">Reject:</b> <input type="radio" value="R" name="{{a.user.pk}}">
 </p>
 
 {% endfor %}
-          <input style="font-size: 30px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
+     <br>
+          <input style="font-size: 25px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
      </span>
 </form>
-
     {% show_manage_tools room_id=rid %}
 {% endblock %}

@@ -1,22 +1,22 @@
-{% if paginator.num_pages > 1 %}
+<div style="color: white; font-size: 30px;">
+
+    {% if paginator.num_pages > 1 %}
 {% if selected_page > 4 %}
-    <b class="select_page">
-<a class="nolnk"  href="{% url 'get_to_main' %}?page=1&typid={{typid}}"><b>1</b></a>...
-    </b>
+<a class="pagination" href="{% url 'get_to_main' %}?page=1&typid={{typid}}"><b>1</b></a>...
 {% endif %}
 {% for p in paginator.page_range %}
 {% if p == selected_page %}
-<a class="nolnk"  href="{% url 'get_to_main' %}?page={{p}}&typid={{typid}}"><b id="selected_page" class="select_page">{{p}}</b></a>
+<b style="background-color: black; border-radius: 100%;">{{p}}</b>
 {% elif p|add:3 >= selected_page and p <= selected_page|add:3 %}
-<a class="nolnk"  href="{% url 'get_to_main' %}?page={{p}}&typid={{typid}}"><b class="select_page">{{p}}</b></a>
+    <a class="pagination" href="{% url 'get_to_main' %}?page={{p}}&typid={{typid}}"><b>{{p}}</b></a>
 {% endif %}
 {% endfor %}
 {% if selected_page < paginator.num_pages|add:-3 %}
-    <b class="select_page">
-...<a class="nolnk"  href="{% url 'get_to_main' %}?page={{paginator.num_pages}}&typid={{typid}}"><b>{{paginator.num_pages}}</b></a>
-    </b>
+...<a class="pagination" href="{% url 'get_to_main' %}?page={{paginator.num_pages}}&typid={{typid}}"><b>{{paginator.num_pages}}</b></a>
 {% endif %}
 {%endif%}
+
+</div>
 
 
 

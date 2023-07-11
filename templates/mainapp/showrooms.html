@@ -3,20 +3,35 @@
 {% block content %}
 
 {% show_types %}
-
-<b class="page_output">
         {% if request.user.is_authenticated %}
         <b id="create_room_button_content"><a href="{% url 'create_room' %}"><button id = 'create_room_button'><b id = 'text_in_button'>Create Room</b></button></a></b>
+    <div style="position: relative; top: 30px;">
         {% for room in page_obj %}
-                <hr>
-                <h2 style="color: yellow;">{{room.type.type_name}}</h2><h1><a class="nolnk" href={{room.get_output_address}}>{{ room.room_name }}</a></h1><a class="nolnk" id="user_lnk" href={{room.get_user_address}}>{{ room.author.username }}</a class="nolnk"><br>
-        {% endfor %}
+        <a style="text-decoration: none; color: white;" href="#">
+        <div class="item">
+             <img align="center" style="border-radius: 50%; overflow:hidden; vertical-align: middle;" src="{{room.author.avatar.url}}" height="50" width="50" >
+            <span class="caption">{{room.author.username}}</span>
+        </div>
+        </a>
+    <span style="color: white; font-size: 30px;">
+
+
+        <a style = 'text-decoration: none; color: black; ' href="{% url 'show_room' room_id=room.pk %}">{{room.room_name}}</a>
+         <b style="color: yellow; font-size: 10px;">{{room.type.type_name}}</b>
+    </span>
+
+    <p>
+    {% endfor %}
+{% show_pag pag=paginator req=request selpage=page_obj.number%}
+    </div>
+
+
+
         {% else %}
         <h1>Log in to see all rooms</h1>
         {% endif %}
 
-</b>
-{% show_pag pag=paginator req=request selpage=page_obj.number%}
+
 
 
 

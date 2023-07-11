@@ -13,6 +13,9 @@
 
         </span>
 
+            {% if m.user.avatar %}
+            <img style="border-radius: 50%; overflow:hidden; vertical-align: middle;" src="{{m.user.avatar.url}}" height="50" width="50" >
+            {% endif %}
             <b style="color: white;">
                 {{m.user.username}}
             </b>
@@ -30,8 +33,10 @@
         </span>
         {% endif %}
     </div>
+        <br>
 {% endfor %}
-      <input style="font-size: 30px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
+        <br>
+      <input style="font-size: 25px; color: green; border-radius: 50%; height: 60px;" type='submit' value="Save">
     </span>
 </form>
 

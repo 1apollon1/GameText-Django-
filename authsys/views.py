@@ -26,7 +26,7 @@ class SignUpView(CreateView):
     extra_context = {'title': 'Create your account'}
 
     def form_valid(self, form):
-        valid = super(SignUpView, self).form_valid(form)
+        valid = super().form_valid(form)
         username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
         new_user = authenticate(username=username, password=password)
         login(self.request, new_user)

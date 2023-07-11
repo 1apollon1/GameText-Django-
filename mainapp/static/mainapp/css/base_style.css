@@ -92,3 +92,29 @@ body{
     black; color:
     white;
 }
+
+div.item {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+img {
+    width: 50px;
+    height: 50px;
+    background-color: grey;
+}
+.caption {
+    display: block;
+}
+
+span.item {
+    vertical-align: top;
+    text-align: center;
+    width: 120px;
+}
+
+.pagination{
+    color:white;
+    text-decoration:none;
+}

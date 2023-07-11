@@ -14,7 +14,6 @@ def upper_case_author_name(obj):
 
 class MainappAdmin(admin.ModelAdmin):
     list_display_links = ['room_name']
-    list_editable = []
     list_display = ['room_name', upper_case_author_name, 'type', 'create_date']
     search_fields = ['room_name', 'room_author_name']
     search_help_text = 'Enter search query'

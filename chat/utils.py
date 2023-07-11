@@ -11,7 +11,6 @@ def get_change_dict(request):
         except ValueError:
             continue
         if member not in change_dict.keys():
-            print(member)
             if request.user == Membership.objects.get(pk=member).user:
                 change_dict[member] = {'role': ''}
             else:
@@ -49,6 +48,17 @@ def only_for_author(func):
         if room_id not in request.user.created_posts.values_list('pk', flat=True):
             raise PermissionError('You are not author of this room')
         return func(request, room_id)
+    return wrapper
+#decorator
+
+
+
+#decorator
+def login_required(func):
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Exception('You must be authenticated')
+        return func(request, *args, **kwargs)
     return wrapper
 #decorator
 

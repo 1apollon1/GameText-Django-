@@ -15,9 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.template.defaulttags import url
 from django.urls import path, include
 from .sys_views import hand404
-
+from . import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -29,4 +31,8 @@ urlpatterns = [
     path('roomchat/', include('chat.urls')),
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
 handler404 = hand404
