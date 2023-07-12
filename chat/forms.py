@@ -2,7 +2,11 @@ from django import forms
 from mainapp.models import *
 
 class ManageRoomOptionsForm(forms.ModelForm):
-
+    c = []
+    types = RoomType.objects.all()
+    for t in types:
+        c.append((t.pk, t.type_name))
+    type = forms.ChoiceField(choices=c, widget=forms.Select(attrs={'class': 'creating_inputs', 'id': 'select_inp'}))
     class Meta:
         model = Rooms
         fields=[
@@ -20,6 +24,7 @@ class ManageRoomOptionsForm(forms.ModelForm):
         ]
 
     room_name = forms.CharField(label='Name for your room')
+
 
     chat_background_color = forms.CharField(
         label='Background color for your chatlog',
@@ -62,3 +67,7 @@ class ManageRoomOptionsForm(forms.ModelForm):
         label='Width for your actionlog',
         widget = forms.NumberInput(attrs={'style': "width: 50px;", 'min': 1, 'class': 'manage-room-forms'})
     )
+
+
+    def clean_type(self):
+        return RoomType.objects.get(pk=int(self.cleaned_data['type']))

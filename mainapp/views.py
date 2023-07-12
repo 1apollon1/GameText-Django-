@@ -29,9 +29,9 @@ class Main(ListView):
         return context
     def get_queryset(self):
         if 'typid' in self.request.GET.keys() and self.request.GET['typid'].isdigit():
-            queryset = Rooms.objects.filter(type_id = int(self.request.GET['typid'])).select_related('author')
+            queryset = Rooms.objects.filter(type_id = int(self.request.GET['typid'])).select_related('author', 'type')
         else:
-            queryset = Rooms.objects.all().select_related('author')
+            queryset = Rooms.objects.all().select_related('author', 'type')
         queryset = queryset.order_by('-create_date')
         return queryset
 
