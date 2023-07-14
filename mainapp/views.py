@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from .forms import *
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, FormMixin
 from MagrasBox.settings import BASE_DIR
 import os
 
@@ -23,16 +23,37 @@ class Main(ListView):
     context_object_name = 'rooms'
     template_name = 'mainapp/showrooms.html'
     extra_context = {'title': 'Main'}
+
+
+    def get(self, request, *args, **kwargs):
+        self.query = {}
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.query = {}
+        if 'search_inp' in self.request.POST:
+            self.query['room_name__contains'] = request.POST.get('search_inp')
+        else:
+            del self.query['room_name__contains']
+        self.object_list = self.get_queryset()
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
         context['types'] = RoomType.objects.all()
+        if 'search_inp' in self.request.POST:
+            context['search_init'] = self.request.POST.get('search_inp')
         return context
+
+
     def get_queryset(self):
         if 'typid' in self.request.GET.keys() and self.request.GET['typid'].isdigit():
-            queryset = Rooms.objects.filter(type_id = int(self.request.GET['typid'])).select_related('author', 'type')
+            self.query['type_id'] = int(self.request.GET['typid'])
+        if self.query != {}:
+            queryset = Rooms.objects.filter(**self.query).select_related('author', 'type').order_by('-create_date')
         else:
-            queryset = Rooms.objects.all().select_related('author', 'type')
-        queryset = queryset.order_by('-create_date')
+            queryset = Rooms.objects.all().select_related('author', 'type').order_by('-create_date')
         return queryset
 
 
