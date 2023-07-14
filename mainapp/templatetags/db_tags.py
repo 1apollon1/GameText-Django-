@@ -10,6 +10,12 @@ def get_type(room_name):
 
 
 @register.simple_tag
+def have_rated(user, room):
+    if user in room.rated_persons.all():
+        return True
+    return False
+
+@register.simple_tag
 def get_room(id):
     return Rooms.objects.get(pk=id)
 

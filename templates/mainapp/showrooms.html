@@ -1,6 +1,7 @@
 {% extends 'mainapp/base.html' %}
 {% load db_tags %}
 {% block content %}
+{% load static %}
 
 {% show_types %}
         {% if request.user.is_authenticated %}
@@ -22,13 +23,24 @@
         </a>
     <span style="color: white; font-size: 30px;">
 
-
+        <b>
         <a style = 'text-decoration: none; color: black; ' href="{% url 'show_room' room_id=room.pk %}">{{room.room_name}}</a>
          <b style="color: yellow; font-size: 10px;">{{room.type.type_name}}</b>
+            <b id="{{room.pk}}rate" style="color: {{room.get_rate_color}}">{{room.rate}}</b>
+            {% have_rated request.user room as hr %}
+            {% if not hr %}
+            <span id="{{room.pk}}button_field">
+            <button class="down" style="cursor:pointer; color: red; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">-</button>
+            <button class="up" style="cursor:pointer; color: green; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">+</button>
+            </span>
+                {% endif %}
+        </b>
+
     </span>
 
     <p>
     {% endfor %}
+
 {% show_pag pag=paginator req=request selpage=page_obj.number%}
     </div>
 
@@ -39,7 +51,33 @@
         {% endif %}
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
+ <script type="text/javascript">
+    $('.up').click(function(){
+    $.ajax(
+    {
+        type:"GET",
+        url: '/rate/'+this.value+'/'+'up',
+        success: function( ans )
+        {
+            document.getElementById(ans['pk']+'rate').innerHTML = ans['rate']
+            document.getElementById(ans['pk']+'button_field').innerHTML = ''
+        }
+     })
+});
 
-
+ $('.down').click(function(){
+    $.ajax(
+    {
+        type:"GET",
+        url: '/rate/'+this.value+'/'+'down',
+        success: function( ans )
+        {
+            document.getElementById(ans['pk']+'rate').innerHTML = ans['rate']
+            document.getElementById(ans['pk']+'button_field').innerHTML = ''
+        }
+     })
+});
+</script>
 {% endblock %}

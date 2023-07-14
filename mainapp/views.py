@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-
+from chat.utils import login_required
+from .utils import *
 from .forms import *
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -10,7 +11,7 @@ from MagrasBox.settings import BASE_DIR
 import os
 
 # Create your views here.
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from .models import *
 
 from django.shortcuts import redirect
@@ -44,6 +45,7 @@ class Main(ListView):
         context['types'] = RoomType.objects.all()
         if 'search_inp' in self.request.POST:
             context['search_init'] = self.request.POST.get('search_inp')
+        context['pk'] = 0
         return context
 
 
@@ -115,6 +117,27 @@ class CreateRoomView(LoginRequiredMixin, CreateView):
         self.success_url = reverse_lazy('get_to_main')
         self.create_data(room)
         return super(CreateRoomView, self).form_valid(form)
+
+
+
+
+@login_required
+def rate(request, room_id, type):
+    value = 1
+    if type == 'down':
+        value = -1
+    elif type == 'up':
+        pass
+    else:
+        raise ValueError('Invalid rate type')
+    r = Rooms.objects.get(pk=int(room_id))
+    if request.user in r.rated_persons.all():
+        raise PermissionError('You have rated room already')
+    r.rate+=value
+    r.rated_persons.add(request.user)
+    r.save()
+    ans = f'<b id="rate" style="color: {r.get_rate_color()}">{r.rate}</b>'
+    return JsonResponse({'rate': ans, 'pk': r.pk})
 
 
 

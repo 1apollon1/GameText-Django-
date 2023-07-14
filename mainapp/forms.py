@@ -16,5 +16,9 @@ class CreateRoom(forms.ModelForm):
             'room_name': forms.TextInput(attrs = {'class': 'creating_inputs'}),
         }
 
+    def clean_type(self):
+        return RoomType.objects.get(pk=int(self.cleaned_data['type']))
+
+
 class Search(forms.Form):
     search_inp = forms.CharField(label='', widget=forms.TextInput(attrs={'style': 'width: 70%'}))
