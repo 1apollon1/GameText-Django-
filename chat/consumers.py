@@ -60,6 +60,8 @@ class ChatConsumer(WebsocketConsumer):
 
                 if message[0] == '/':
                     message = act_constructor.com_catcher(author, message)
+                    if not message:
+                        raise Exception('Invalid command')
                     is_command=True
                 else:
                     message = f'{author}: {message}'
@@ -77,8 +79,8 @@ class ChatConsumer(WebsocketConsumer):
                         )
             else:
                 raise Exception()
-        except:
-            self.send(text_data=json.dumps({"message": '*You cant write anything*'}))
+        except Exception as excp:
+            self.send(text_data=json.dumps({"message": f'*{excp}*'}))
     # Receive message from room group
     def chat_message(self, event):
         message = event["message"]
