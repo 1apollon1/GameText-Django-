@@ -94,7 +94,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("192.168.99.100", 6379)],
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }
@@ -106,9 +106,9 @@ CHANNEL_LAYERS = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "text-game-db",
+        "NAME": "magras-box-db",
         "USER": "postgres",
-        "PASSWORD": "jayBYE_8822",
+        "PASSWORD": "jayBYE_4679",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }

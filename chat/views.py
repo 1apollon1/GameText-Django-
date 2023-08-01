@@ -105,6 +105,6 @@ def manage_applications(request, room_id):
                 Membership.objects.create(room_id=room_id, user_id=int(a))
             else:
                 applications.update(was_rejected=True, reject_date=datetime.now())
+        return redirect('show_room', room_id=room_id)
     else:
-        pass
-    return render(request, template_name='chat/manage_applications.html', context={'applications': applications, 'rid': room_id, 'title': "Room's applications"})
+        return render(request, template_name='chat/manage_applications.html', context={'applications': applications, 'rid': room_id, 'title': "Room's applications"})

@@ -28,16 +28,19 @@ color: {{room.action_chat_font_color}}
     {% elif member %}
          <h>You can only watch</h>
     {% else %}
+        <div id="application_div">
         {% if not application_sent %}
-        <a href="{% url 'applicate' room_id=room.pk %}"><button>Applicate for join</button> </a>
+        <button id = 'application_button' value="{{room.pk}}">Applicate for join</button>
         {% else %}
         <b style="color: green">You applicated for join recently</b>
         {% endif %}
+        </div>
     {% endif %}
     {% if request.user == room.author %}
     <a href="{% url 'manage_room_options' room_id=room.pk %}"><button>Manage</button></a>
     {% endif %}
 
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'chat/js/ajax_for_applicate.js'  %}"></script>
+<script type="text/javascript" src="{% static 'chat/js/chat.js' %}"></script>
 {% endblock %}

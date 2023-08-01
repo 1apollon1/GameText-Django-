@@ -30,8 +30,8 @@
             {% have_rated request.user room as hr %}
             {% if not hr %}
             <span id="{{room.pk}}button_field">
-            <button class="down" style="cursor:pointer; color: red; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">-</button>
-            <button class="up" style="cursor:pointer; color: green; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">+</button>
+            <button class="reaction" id="down" style="cursor:pointer; color: red; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">-</button>
+            <button class="reaction" id='up' style="cursor:pointer; color: green; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">+</button>
             </span>
                 {% endif %}
         </b>
@@ -40,8 +40,11 @@
 
     <p>
     {% endfor %}
+    <div style="height: 30px;">
+        {% show_pag pag=paginator req=request selpage=page_obj.number%}
+        <p></p>
+    </div>
 
-{% show_pag pag=paginator req=request selpage=page_obj.number%}
     </div>
 
 
@@ -53,31 +56,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
- <script type="text/javascript">
-    $('.up').click(function(){
-    $.ajax(
-    {
-        type:"GET",
-        url: '/rate/'+this.value+'/'+'up',
-        success: function( ans )
-        {
-            document.getElementById(ans['pk']+'rate').innerHTML = ans['rate']
-            document.getElementById(ans['pk']+'button_field').innerHTML = ''
-        }
-     })
-});
+ <script src="{% static 'mainapp/js/ajax_for_rate.js' %}" type="text/javascript">
 
- $('.down').click(function(){
-    $.ajax(
-    {
-        type:"GET",
-        url: '/rate/'+this.value+'/'+'down',
-        success: function( ans )
-        {
-            document.getElementById(ans['pk']+'rate').innerHTML = ans['rate']
-            document.getElementById(ans['pk']+'button_field').innerHTML = ''
-        }
-     })
-});
 </script>
 {% endblock %}
