@@ -33,11 +33,13 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_api',
     'daphne',
     'channels',
     'chat',
     'captcha',
     "debug_toolbar",
+    'rest_framework',
     'authsys.apps.AuthsysConfig',
     'mainapp.apps.MainappConfig',
     'django.contrib.admin',
