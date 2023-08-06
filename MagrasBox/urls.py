@@ -17,10 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.template.defaulttags import url
 from django.urls import path, include
+from rest_framework import routers
+
+from rest_api.views import RoomApiViewset
 from .sys_views import hand404
 from . import settings
 from django.conf.urls.static import static
 
+rooms_router = routers.DefaultRouter()
+rooms_router.register(r'rooms', RoomApiViewset, basename='rooms')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,10 +34,12 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('captcha/', include('captcha.urls')),
     path('roomchat/', include('chat.urls')),
+    path('api/', include(rooms_router.urls))
+
 
 ]
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) + \
+                   static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = hand404
