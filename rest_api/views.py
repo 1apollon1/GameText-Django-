@@ -1,7 +1,5 @@
 from django.core.exceptions import FieldError
-from django.shortcuts import render
-from rest_framework.permissions import IsAuthenticated, Is
-from rest_framework.views import APIView
+from .permissions import ManageRoomPermission
 from rest_framework.response import Response
 from .serializers import RoomSerializer
 from mainapp.models import Rooms
@@ -9,9 +7,9 @@ from rest_framework.viewsets import ModelViewSet
 from django.forms.models import model_to_dict
 
 
-class RoomApiViewset(ModelViewSet):
+class RoomApiViewSet(ModelViewSet):
     serializer_class = RoomSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = (ManageRoomPermission, )
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -31,13 +29,11 @@ class RoomApiViewset(ModelViewSet):
 
         return Response(serializer.data)
 
-
     def list(self, request, *args, **kwargs):
         try:
             return super().list(request, *args, **kwargs)
         except FieldError:
             return Response({'failure': 'Invalid GET data'})
-
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')

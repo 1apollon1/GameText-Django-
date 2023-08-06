@@ -19,13 +19,13 @@ from django.template.defaulttags import url
 from django.urls import path, include
 from rest_framework import routers
 
-from rest_api.views import RoomApiViewset
+from rest_api.views import RoomApiViewSet
 from .sys_views import hand404
 from . import settings
 from django.conf.urls.static import static
 
 rooms_router = routers.DefaultRouter()
-rooms_router.register(r'rooms', RoomApiViewset, basename='rooms')
+rooms_router.register(r'rooms', RoomApiViewSet, basename='rooms')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
