@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.template.defaulttags import url
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import routers
 
 from rest_api.views import RoomApiViewSet
@@ -34,7 +34,7 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('captcha/', include('captcha.urls')),
     path('roomchat/', include('chat.urls')),
-    path('api/', include(rooms_router.urls))
+    path('api/', include('rest_api.urls')),
 
 
 ]

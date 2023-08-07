@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'chat',
     'captcha',
     "debug_toolbar",
-    'rest_framework',
     'authsys.apps.AuthsysConfig',
     'mainapp.apps.MainappConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'rest_framework.authtoken',
+    'djoser',
+    'rest_framework',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -62,6 +64,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 ROOT_URLCONF = 'MagrasBox.urls'
 
