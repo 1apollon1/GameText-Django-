@@ -5,9 +5,13 @@ from .models import *
 
 class CreateRoom(forms.ModelForm):
     c = []
-    types = RoomType.objects.all()
-    for t in types:
-        c.append((t.pk, t.type_name))
+
+    try:
+        types = RoomType.objects.all()
+        for t in types:
+            c.append((t.pk, t.type_name))
+    except:
+        pass
     type = forms.ChoiceField(choices=c, widget=forms.Select(attrs = {'class': 'creating_inputs', 'id': 'select_inp'}))
     class Meta:
         model = Rooms
