@@ -118,7 +118,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "magras-box-db",
         "USER": "django",
-        "PASSWORD": "jayBYE_4679",
+        "PASSWORD": data["db_password"],
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
