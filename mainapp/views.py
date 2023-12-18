@@ -130,14 +130,32 @@ def rate(request, room_id, type):
         pass
     else:
         raise ValueError('Invalid rate type')
-    r = Rooms.objects.get(pk=int(room_id))
-    if request.user in r.rated_persons.all():
-        raise PermissionError('You have rated room already')
-    r.rate+=value
-    r.rated_persons.add(request.user)
-    r.save()
-    ans = f'<b id="rate" style="color: {r.get_rate_color()}">{r.rate}</b>'
-    return JsonResponse({'rate': ans, 'pk': r.pk})
+    room = Rooms.objects.get(pk=int(room_id))
+    blue_button = True
+    if request.user in room.rated_persons.all():
+        rating = Rating.objects.get(room_id = room.pk, user_id = request.user.pk)
+        if (rating.is_positive and value > 0) or (not rating.is_positive and value < 0):
+            if value > 0:
+                room.rate -= 1
+            else:
+                room.rate += 1
+            blue_button = False
+            rating.delete()
+        else:
+            rating.is_positive = not rating.is_positive
+            room.rate += 2*value
+            rating.save()
 
+    else:
+        room.rate+=value
+        Rating.objects.create(user_id = request.user, room_id = room, is_positive = value>0)
+    room.save()
+    if blue_button:
+        if value > 0:
+            blue_button = 'r'
+        else:
+            blue_button = 'l'
+    ans = f'<b id="rate" style="color: {room.get_rate_color()}">{room.rate}</b>'
+    return JsonResponse({'rate': ans, 'pk': room.pk, 'blue_button': blue_button})
 
 

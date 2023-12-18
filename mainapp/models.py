@@ -27,7 +27,7 @@ class Rooms(models.Model):
     type = models.ForeignKey(RoomType, on_delete=models.SET_DEFAULT, default=1)
     members = models.ManyToManyField(CustomUser, through='Membership')
     rate = models.IntegerField(default=0)
-    rated_persons = models.ManyToManyField(CustomUser, related_name='rated_posts')
+    rated_persons = models.ManyToManyField(CustomUser, through = 'Rating', related_name='rated_posts')
 
     chat_background_color = models.CharField(default='#fff88f')
     chat_font_color = models.CharField(default='#000000')
@@ -70,6 +70,11 @@ class Rooms(models.Model):
 
     class Meta:
         verbose_name_plural = "rooms"
+
+class Rating(models.Model):
+    room_id = models.ForeignKey(Rooms, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    is_positive = models.BooleanField()
 
 
 class Membership(models.Model):

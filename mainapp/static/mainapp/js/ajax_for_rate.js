@@ -1,3 +1,8 @@
+function getElementInsideContainer(containerID, childID) {
+   var elm = document.getElementById(containerID).querySelector('#' + childID);
+   return elm ? elm : {};
+}
+
 $('.reaction').click(function(){
     $.ajax(
         {
@@ -6,7 +11,23 @@ $('.reaction').click(function(){
             success: function( ans )
                 {
                     document.getElementById(ans['pk']+'rate').innerHTML = ans['rate']
-                    document.getElementById(ans['pk']+'button_field').innerHTML = ''
+                    var buttonup = getElementInsideContainer(ans['pk']+'button_field', 'up')
+                    var buttondown = getElementInsideContainer(ans['pk']+'button_field', 'down')
+                    if (ans['blue_button'] == 'r'){
+                        buttonup.style.background = 'blue'
+                        buttondown.style.background = null
+                    }
+                    else if (ans['blue_button'] == 'l'){
+                        buttondown.style.background = 'blue'
+                        buttonup.style.background = null
+                    }
+
+                    else{
+                        console.log('all in null')
+                        buttondown.style.background =  null
+                        buttonup.style.background = null
+                    }
+
                 }
          })
 })

@@ -16,6 +16,11 @@ def have_rated(user, room):
     return False
 
 @register.simple_tag
+def is_positive_rating(user, room):
+    rating = Rating.objects.get(user_id = user, room_id = room)
+    return rating.is_positive
+
+@register.simple_tag
 def get_room(id):
     return Rooms.objects.get(pk=id)
 

@@ -28,12 +28,25 @@
          <b style="color: yellow; font-size: 10px;">{{room.type.type_name}}</b>
             <b id="{{room.pk}}rate" style="color: {{room.get_rate_color}}">{{room.rate}}</b>
             {% have_rated request.user room as hr %}
-            {% if not hr %}
-            <span id="{{room.pk}}button_field">
-            <button class="reaction" id="down" style="cursor:pointer; color: red; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">-</button>
-            <button class="reaction" id='up' style="cursor:pointer; color: green; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">+</button>
-            </span>
+            {% if hr %}
+                {% is_positive_rating request.user.pk room.pk as is_positive %}
+                {% if is_positive %}
+                    <span id="{{room.pk}}button_field">
+                    <button class="reaction" id="down" style="cursor:pointer; color: red; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">-</button>
+                    <button class="reaction" id='up' style="cursor:pointer; background-color:blue; color: green; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">+</button>
+                    </span>
+                {% else %}
+                    <span id="{{room.pk}}button_field">
+                    <button class="reaction" id="down" style="cursor:pointer; color: red; background-color:blue; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">-</button>
+                    <button class="reaction" id='up' style="cursor:pointer; color: green; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">+</button>
+                    </span>
                 {% endif %}
+            {% else %}
+                <span id="{{room.pk}}button_field">
+                <button class="reaction" id="down" style="cursor:pointer; color: red; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">-</button>
+                <button class="reaction" id='up' style="cursor:pointer; color: green; border-radius: 70%; font-size: 20px; width: 30px;" value="{{room.pk}}">+</button>
+                </span>
+            {% endif %}
         </b>
 
     </span>
