@@ -20,7 +20,7 @@ def get_client_ip(request):
 
 class SignUpView(CreateView):
     model = CustomUser
-    template_name = 'authsys/register.html'
+    template_name = 'authsys/register_page.html'
     form_class = SignUpForm
     success_url = reverse_lazy('get_to_main')
     extra_context = {'title': 'Create your account'}
@@ -35,7 +35,7 @@ class SignUpView(CreateView):
 
 class SignInView(LoginView):
     form_class = SignInFormSecurity
-    template_name = 'authsys/login.html'
+    template_name = 'authsys/login_page.html'
     extra_context = {'title': 'Login'}
 
 

@@ -1,16 +1,16 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db.utils import ProgrammingError
 
 from .models import *
 
 class CreateRoom(forms.ModelForm):
     c = []
-
     try:
         types = RoomType.objects.all()
         for t in types:
             c.append((t.pk, t.type_name))
-    except:
+    except ProgrammingError:
         pass
     type = forms.ChoiceField(choices=c, widget=forms.Select(attrs = {'class': 'creating_inputs', 'id': 'select_inp'}))
     class Meta:

@@ -4,11 +4,12 @@ from django.urls import reverse_lazy
 from chat.utils import login_required
 from .utils import *
 from .forms import *
-from django.views.generic.list import ListView
+from django.views.generic.list import ListView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, FormMixin
 from MagrasBox.settings import BASE_DIR
 import os
+from authsys.forms import SignInFormSecurity, SignUpForm
 
 # Create your views here.
 from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
@@ -17,13 +18,12 @@ from .models import *
 from django.shortcuts import redirect
 
 
-
 class Main(ListView):
     paginate_by = 10
     model = Rooms
     context_object_name = 'rooms'
     template_name = 'mainapp/showrooms.html'
-    extra_context = {'title': 'Main'}
+    extra_context = {'title': 'Main', 'form_login': SignInFormSecurity, 'form_signup': SignUpForm}
 
 
     def get(self, request, *args, **kwargs):
@@ -60,12 +60,13 @@ class Main(ListView):
 
 
 
-class ShowRoom(DetailView):
+class ShowRoom(LoginRequiredMixin, DetailView):
     model = Rooms
     pk_url_kwarg = 'roomid'
     template_name = 'mainapp/room.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
         context = super().get_context_data()
         context['title'] = self.object.room_name
         return context
@@ -121,6 +122,7 @@ class CreateRoomView(LoginRequiredMixin, CreateView):
 
 
 
+
 @login_required
 def rate(request, room_id, type):
     value = 1
@@ -133,7 +135,7 @@ def rate(request, room_id, type):
     room = Rooms.objects.get(pk=int(room_id))
     blue_button = True
     if request.user in room.rated_persons.all():
-        rating = Rating.objects.get(room_id = room.pk, user_id = request.user.pk)
+        rating = Rating.objects.get(room = room, user = request.user)
         if (rating.is_positive and value > 0) or (not rating.is_positive and value < 0):
             if value > 0:
                 room.rate -= 1
@@ -148,7 +150,7 @@ def rate(request, room_id, type):
 
     else:
         room.rate+=value
-        Rating.objects.create(user_id = request.user, room_id = room, is_positive = value>0)
+        Rating.objects.create(user = request.user, room = room, is_positive = value>0)
     room.save()
     if blue_button:
         if value > 0:

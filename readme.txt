@@ -4,7 +4,7 @@ Follow next steps to run this app sucessfully:
 
 2.Create a virtualenv and install all requirements, using command "pip install -r [path to requirements.txt]" (you should activate environment before)
 
-3.Create file SETTINGS_DATA.json in "MagrasBox" folder and write it down there: "{SECRET_KEY: [your secret key], "db_password: [password for your database] }"
+3.Set the all required environment variables
 
 4.You can use any database you want, but i chose postgresql, so download it the way you want, create user with any name and db with also any name.
 All you have to do is to edit database data in settings.py. Everyting is quite clear there, if you know what database is and how to use it.

@@ -12,22 +12,32 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from json import load as jsload
 from pathlib import Path
 import os
+try:
+    from dotenv import load_dotenv
+    dotenv_path = os.path.join(os.path.dirname(__file__), 'envar.env')
+    if os.path.exists(dotenv_path):
+        load_dotenv(dotenv_path)
+except ModuleNotFoundError:
+    pass
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-with open(f'{BASE_DIR}/MagrasBox/SETTINGS_DATA.json') as f:
-    data = jsload(f)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = data["SECRET_KEY"]
+
+env = os.environ
+
+
+SECRET_KEY = env.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(env.get("DEBUG")))
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.9']
+ALLOWED_HOSTS = [env.get('HOST'), '192.168.1.9']
 
 
 # Application definition
@@ -65,11 +75,11 @@ MIDDLEWARE = [
 
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',
+#     )
+# }
 
 ROOT_URLCONF = 'MagrasBox.urls'
 
@@ -104,7 +114,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [(env.get('channel_host'), 6379)],
         },
     },
 }
@@ -112,14 +122,13 @@ CHANNEL_LAYERS = {
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "magras-box-db",
-        "USER": "django",
-        "PASSWORD": data["db_password"],
-        "HOST": "127.0.0.1",
+        "NAME": env.get('db_name'),
+        "USER": env.get('db_user'),
+        "PASSWORD": env.get("db_password"),
+        "HOST": env.get("db_host"),
         "PORT": "5432",
     }
 }
@@ -164,13 +173,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authsys.CustomUser'
 
-
-
 INTERNAL_IPS = [
-    # ...
     "127.0.0.1",
-    # ...
 ]
-
+#
+# CAPTCHA_IMAGE_SIZE=[500,200]
+# CAPTCHA_FONT_SIZE=100
 
 

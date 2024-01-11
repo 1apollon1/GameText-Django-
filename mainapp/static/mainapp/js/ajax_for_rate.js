@@ -3,10 +3,16 @@ function getElementInsideContainer(containerID, childID) {
    return elm ? elm : {};
 }
 
+
 $('.reaction').click(function(){
     $.ajax(
         {
             type:"GET",
+            headers: {
+                "Accept": "application/json; odata=verbose"
+            },
+            data: JSON.stringify(23),
+            processData: false,
             url: '/rate/'+this.value+'/'+this.id,
             success: function( ans )
                 {

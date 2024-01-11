@@ -11,14 +11,15 @@
 </head>
 <body>
 {% block main %}
-
-{% show_panel req=request %}
-<p>
+{% include 'mainapp/show_main_panel.html' %}
+<p></p>
 {% endblock main %}
 
 
 
 {% block content %}
 {% endblock %}
+
+
 </body>
 </html>

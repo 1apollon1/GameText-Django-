@@ -24,18 +24,18 @@ class Rooms(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False, related_name='created_posts')
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
-    type = models.ForeignKey(RoomType, on_delete=models.SET_DEFAULT, default=1)
+    type = models.ForeignKey(RoomType, on_delete=models.CASCADE, default=1)
     members = models.ManyToManyField(CustomUser, through='Membership')
     rate = models.IntegerField(default=0)
     rated_persons = models.ManyToManyField(CustomUser, through = 'Rating', related_name='rated_posts')
 
-    chat_background_color = models.CharField(default='#fff88f')
-    chat_font_color = models.CharField(default='#000000')
+    chat_background_color = models.CharField(default='#fff88f', max_length=7)
+    chat_font_color = models.CharField(default='#000000', max_length=7)
     chat_height = models.IntegerField(default=500)
     chat_width = models.IntegerField(default=630)
 
-    action_chat_background_color = models.CharField(default='#fff88f')
-    action_chat_font_color = models.CharField(default='#000000')
+    action_chat_background_color = models.CharField(default='#fff88f', max_length=7)
+    action_chat_font_color = models.CharField(default='#000000', max_length=7)
     action_chat_height = models.IntegerField(default=500)
     action_chat_width = models.IntegerField(default=630)
 
@@ -72,8 +72,8 @@ class Rooms(models.Model):
         verbose_name_plural = "rooms"
 
 class Rating(models.Model):
-    room_id = models.ForeignKey(Rooms, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    room = models.ForeignKey(Rooms, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_positive = models.BooleanField()
 
 

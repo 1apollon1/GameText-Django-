@@ -6,5 +6,3 @@ chats_data
 actions_data
 media
 .idea
-docker-compose.yml
-envar.env
