@@ -37,7 +37,7 @@ SECRET_KEY = env.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(env.get("DEBUG")))
 
-ALLOWED_HOSTS = [env.get('HOST'), '192.168.1.9']
+ALLOWED_HOSTS = [env.get('HOST'), '192.168.1.9', '127.0.0.1']
 
 
 # Application definition

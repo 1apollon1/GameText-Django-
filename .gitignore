@@ -8,3 +8,4 @@ media
 .idea
 docker-compose.yml
 envar.env
+static/admin
