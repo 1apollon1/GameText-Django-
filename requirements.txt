@@ -15,7 +15,6 @@ daphne
 defusedxml
 Django
 django-debug-toolbar
-django-ranged-response
 django-simple-captcha
 django-templated-mail
 djangorestframework
@@ -25,7 +24,6 @@ hyperlink
 idna
 incremental
 msgpack
-mysqlclient
 oauthlib
 Pillow
 psycopg-binary
@@ -47,7 +45,6 @@ social-auth-app-django
 social-auth-core
 sqlparse
 Twisted
-twisted-iocpsupport
 txaio
 typing_extensions
 tzdata

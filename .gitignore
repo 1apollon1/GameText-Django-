@@ -9,3 +9,4 @@ media
 docker-compose.yml
 envar.env
 admin
+.venv
