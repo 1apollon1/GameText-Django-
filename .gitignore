@@ -1,7 +1,6 @@
 __pycache__
 SETTINGS_DATA.json
 db.sqlite3
-migrations
 chats_data
 actions_data
 media

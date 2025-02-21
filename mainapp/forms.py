@@ -6,12 +6,11 @@ from .models import *
 
 class CreateRoom(forms.ModelForm):
     c = []
-    try:
-        types = RoomType.objects.all()
-        for t in types:
-            c.append((t.pk, t.type_name))
-    except ProgrammingError:
-        pass
+    types = RoomType.objects.all()
+    if not types:
+        raise ValidationError("Не создано ни одного типа")
+    for t in types:
+        c.append((t.pk, t.type_name))
     type = forms.ChoiceField(choices=c, widget=forms.Select(attrs = {'class': 'creating_inputs', 'id': 'select_inp'}))
     class Meta:
         model = Rooms

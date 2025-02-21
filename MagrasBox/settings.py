@@ -9,16 +9,9 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-from json import load as jsload
 from pathlib import Path
 import os
-try:
-    from dotenv import load_dotenv
-    dotenv_path = os.path.join(os.path.dirname(__file__), 'envar.env')
-    if os.path.exists(dotenv_path):
-        load_dotenv(dotenv_path)
-except ModuleNotFoundError:
-    pass
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +30,7 @@ SECRET_KEY = env.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(env.get("DEBUG")))
 
-ALLOWED_HOSTS = [env.get('HOST'), '192.168.1.9', '127.0.0.1']
+ALLOWED_HOSTS = [env.get('HOST')]
 
 
 # Application definition
@@ -114,7 +107,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env.get('channel_host'), 6379)],
+            "hosts": [(env.get('CHANNEL_HOST'), 6379)],
         },
     },
 }
@@ -125,10 +118,10 @@ CHANNEL_LAYERS = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.get('db_name'),
-        "USER": env.get('db_user'),
-        "PASSWORD": env.get("db_password"),
-        "HOST": env.get("db_host"),
+        "NAME": env.get('DB_NAME'),
+        "USER": env.get('DB_USER'),
+        "PASSWORD": env.get("DB_PASSWORD"),
+        "HOST": env.get("DB_HOST"),
         "PORT": "5432",
     }
 }
